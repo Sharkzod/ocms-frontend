@@ -223,6 +223,13 @@ function InstructorCoursesContent() {
                     >
                       Analytics
                     </Link>
+
+                    <Link
+                  href={`/dashboard/instructor/course-materials/${course._id}/materials`}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition"
+                >
+                  Materials
+                </Link>
                   </div>
                 </div>
               </div>
