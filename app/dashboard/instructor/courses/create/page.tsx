@@ -16,6 +16,9 @@ function CreateCourseContent() {
     level: '',
     department: '',
     imageUrl: '',
+    description: '', // Added missing field
+    category: '', // Added missing field
+    price: 0, // Added missing field
     learningObjectives: [''],
     requirements: [''],
     targetAudience: ['']
@@ -25,7 +28,7 @@ function CreateCourseContent() {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: name === 'price' ? Number(value) : value // Convert price to number
     }));
   };
 
@@ -178,10 +181,184 @@ function CreateCourseContent() {
             </div>
           </div>
 
-          
-        
+          {/* Added missing fields */}
+          <div>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+              Course Description *
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              required
+              rows={4}
+              value={formData.description}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Provide a detailed description of the course..."
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                Category *
+              </label>
+              <select
+                id="category"
+                name="category"
+                required
+                value={formData.category}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">Select category</option>
+                <option value="programming">Programming</option>
+                <option value="mathematics">Mathematics</option>
+                <option value="science">Science</option>
+                <option value="business">Business</option>
+                <option value="arts">Arts</option>
+                <option value="language">Language</option>
+                <option value="technology">Technology</option>
+                <option value="personal-development">Personal Development</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
+                Price (USD) *
+              </label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                required
+                min="0"
+                step="0.01"
+                value={formData.price}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="0.00"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 mb-2">
+              Course Image URL
+            </label>
+            <input
+              type="url"
+              id="imageUrl"
+              name="imageUrl"
+              value={formData.imageUrl}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+
+          {/* Learning Objectives */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Learning Objectives
+            </label>
+            {formData.learningObjectives.map((objective, index) => (
+              <div key={index} className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  value={objective}
+                  onChange={(e) => handleArrayChange('learningObjectives', index, e.target.value)}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="What will students learn?"
+                />
+                {formData.learningObjectives.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeArrayField('learningObjectives', index)}
+                    className="px-3 py-2 text-red-600 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => addArrayField('learningObjectives')}
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+            >
+              + Add Learning Objective
+            </button>
+          </div>
+
+          {/* Requirements */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Requirements
+            </label>
+            {formData.requirements.map((requirement, index) => (
+              <div key={index} className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  value={requirement}
+                  onChange={(e) => handleArrayChange('requirements', index, e.target.value)}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="What do students need to know?"
+                />
+                {formData.requirements.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeArrayField('requirements', index)}
+                    className="px-3 py-2 text-red-600 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => addArrayField('requirements')}
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+            >
+              + Add Requirement
+            </button>
+          </div>
+
           {/* Target Audience */}
-          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Target Audience
+            </label>
+            {formData.targetAudience.map((audience, index) => (
+              <div key={index} className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  value={audience}
+                  onChange={(e) => handleArrayChange('targetAudience', index, e.target.value)}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Who is this course for?"
+                />
+                {formData.targetAudience.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeArrayField('targetAudience', index)}
+                    className="px-3 py-2 text-red-600 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => addArrayField('targetAudience')}
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+            >
+              + Add Target Audience
+            </button>
+          </div>
 
           <div className="flex justify-end space-x-4 pt-6">
             <Link
